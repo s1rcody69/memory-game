@@ -5,12 +5,16 @@ import { Card } from "./components/Card";
 import { WinModal } from "./components/WinModal";
 import { Leaderboard } from "./components/Leaderboard";
 import { SettingsModal } from "./components/SettingsModal";
+import { AuthPage } from "./components/AuthPage";
 import { useGameLogic, DIFFICULTY_CONFIG } from "./hooks/useGameLogic";
 
+// Views: "game" | "leaderboard" | "auth"
 function App() {
   const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
   const [view, setView]               = useState("game");
   const [showSettings, setShowSettings] = useState(false);
+  // Remember which game tab to return to after auth ("game" or "leaderboard")
+  const [returnView, setReturnView]   = useState("game");
 
   const {
     cards, score, moves, elapsedTime,
@@ -18,13 +22,37 @@ function App() {
     config, loading, scores, settings, changeSettings, streak,
   } = useGameLogic(currentUser);
 
-  const handleLogin = () => setCurrentUser(getCurrentUser());
+  // Called when Sign In button clicked — remember where to return
+  const handleSignInClick = () => {
+    setReturnView(view === "leaderboard" ? "leaderboard" : "game");
+    setView("auth");
+  };
+
+  // Called when auth succeeds
+  const handleAuthSuccess = () => {
+    setCurrentUser(getCurrentUser());
+    setView(returnView); // go back to where user was
+  };
+
+  // Called when user wants to go back without logging in
+  const handleAuthBack = () => setView(returnView);
 
   const handleLogout = () => {
     logout();
     setCurrentUser(null);
+    setView("game");
   };
 
+  // ── Auth page ──────────────────────────────────────────────────────────────
+  if (view === "auth") {
+    return (
+      <div className="app">
+        <AuthPage onSuccess={handleAuthSuccess} onBack={handleAuthBack} />
+      </div>
+    );
+  }
+
+  // ── Main app ───────────────────────────────────────────────────────────────
   return (
     <div className="app">
       <div className="app-inner">
@@ -38,11 +66,11 @@ function App() {
           view={view}
           setView={setView}
           onSettingsOpen={() => setShowSettings(true)}
-          onLogin={handleLogin}
+          onSignInClick={handleSignInClick}
           onLogout={handleLogout}
         />
 
-        {view === "game" ? (
+        {view === "game" && (
           <main className="game-area">
             <div className="difficulty-badge">
               {settings.difficulty.charAt(0).toUpperCase() + settings.difficulty.slice(1)}
@@ -65,14 +93,15 @@ function App() {
               </div>
             )}
 
-            {/* Guest nudge — shown once cards are visible */}
             {!currentUser && !loading && (
               <p className="guest-nudge">
                 🏆 Sign in to save your scores to the leaderboard and track streaks!
               </p>
             )}
           </main>
-        ) : (
+        )}
+
+        {view === "leaderboard" && (
           <Leaderboard scores={scores} currentUser={currentUser} />
         )}
       </div>
