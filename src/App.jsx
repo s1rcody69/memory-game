@@ -7,13 +7,14 @@ import { Leaderboard } from "./components/Leaderboard";
 import { SettingsModal } from "./components/SettingsModal";
 import { AuthPage } from "./components/AuthPage";
 import { useGameLogic, DIFFICULTY_CONFIG } from "./hooks/useGameLogic";
+import { Trophy } from "lucide-react";
 
-// Views: "game" | "leaderboard" | "auth"
+// Views of "game" "leaderboard" "auth"
 function App() {
   const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
   const [view, setView]               = useState("game");
   const [showSettings, setShowSettings] = useState(false);
-  // Remember which game tab to return to after auth ("game" or "leaderboard")
+  // Remember which game tab to return to after auth 
   const [returnView, setReturnView]   = useState("game");
 
   const {
@@ -22,7 +23,7 @@ function App() {
     config, loading, scores, settings, changeSettings, streak,
   } = useGameLogic(currentUser);
 
-  // Called when Sign In button clicked — remember where to return
+  // Called when Sign In button clicked 
   const handleSignInClick = () => {
     setReturnView(view === "leaderboard" ? "leaderboard" : "game");
     setView("auth");
@@ -95,7 +96,7 @@ function App() {
 
             {!currentUser && !loading && (
               <p className="guest-nudge">
-                🏆 Sign in to save your scores to the leaderboard and track streaks!
+                <Trophy />Sign in to save your scores to the leaderboard and track streaks!
               </p>
             )}
           </main>
