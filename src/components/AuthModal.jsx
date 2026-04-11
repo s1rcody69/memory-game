@@ -31,7 +31,7 @@ export const AuthModal = ({ onSuccess }) => {
       <div className="modal auth-modal">
         <div className="auth-modal__brand">
           <span className="auth-modal__logo">🌍</span>
-          <h1 className="auth-modal__title">Africa Match</h1>
+          <h1 className="auth-modal__title"></h1>
           <p className="auth-modal__sub">Memory Card Game</p>
         </div>
 
