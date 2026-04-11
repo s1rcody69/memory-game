@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { login, register } from "../services/auth";
+import { Gamepad2, Trophy } from "lucide-react";
+import { Gamepad } from "lucide-react";
 
 export const AuthPage = ({ onSuccess, onBack }) => {
   const [mode, setMode]         = useState("login");
@@ -23,19 +25,19 @@ export const AuthPage = ({ onSuccess, onBack }) => {
   return (
     <div className="auth-page">
       <div className="auth-page__card">
-        {/* Back to game */}
+        {}
         <button className="auth-page__back" onClick={onBack}>
           ← Back to game
         </button>
 
-        {/* Brand */}
+        {}
         <div className="auth-page__brand">
-          <span className="auth-page__logo">🌍</span>
-          <h1 className="auth-page__title">Africa Match</h1>
-          <p className="auth-page__sub">Memory Card Game</p>
+          <span className="auth-page__logo"><Gamepad2 /></span>
+          <h1 className="auth-page__title">Memory Matching Game</h1>
+          <p className="auth-page__sub">Match cards have fun!</p>
         </div>
 
-        {/* Mode tabs */}
+        {}
         <div className="auth-tabs">
           <button
             type="button"
@@ -107,7 +109,7 @@ export const AuthPage = ({ onSuccess, onBack }) => {
         </p>
 
         <p className="auth-page__benefit">
-          🏆 Sign in to save scores, track streaks &amp; appear on the leaderboard
+          <Trophy />Sign in to save scores, track streaks &amp; appear on the leaderboard
         </p>
       </div>
     </div>
