@@ -1,39 +1,29 @@
-import { useState, useEffect } from "react";
-import { getCurrentUser, logout } from "./services/auth.js";
-import { AuthModal } from "./components/AuthModal.jsx";
-import { GameHeader } from "./components/GameHeader.jsx";
-import { Card } from "./components/Card.jsx";
-import { WinModal } from "./components/WinModal.jsx";
-import { Leaderboard } from "./components/Leaderboard.jsx";
-import { SettingsModal } from "./components/SettingsModal.jsx";
-import { useGameLogic, DIFFICULTY_CONFIG } from "./hooks/useGameLogic.js";
+import { useState } from "react";
+import { getCurrentUser, logout } from "./services/auth";
+import { GameHeader } from "./components/GameHeader";
+import { Card } from "./components/Card";
+import { WinModal } from "./components/WinModal";
+import { Leaderboard } from "./components/Leaderboard";
+import { SettingsModal } from "./components/SettingsModal";
+import { useGameLogic, DIFFICULTY_CONFIG } from "./hooks/useGameLogic";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => getCurrentUser());
-  const [view, setView] = useState("game");
+  const [view, setView]               = useState("game");
   const [showSettings, setShowSettings] = useState(false);
 
   const {
     cards, score, moves, elapsedTime,
     showWin, setShowWin, handleCardClick, initializeGame,
-    config, loading, scores, settings,
-    changeSettings, streak,
+    config, loading, scores, settings, changeSettings, streak,
   } = useGameLogic(currentUser);
 
-  // Re-read user when they log in (streak may have updated)
-  const handleLoginSuccess = (user) => {
-    setCurrentUser(getCurrentUser());
-  };
+  const handleLogin = () => setCurrentUser(getCurrentUser());
 
   const handleLogout = () => {
     logout();
     setCurrentUser(null);
   };
-
-  // Show auth wall if not logged in
-  if (!currentUser) {
-    return <AuthModal onSuccess={handleLoginSuccess} />;
-  }
 
   return (
     <div className="app">
@@ -48,6 +38,7 @@ function App() {
           view={view}
           setView={setView}
           onSettingsOpen={() => setShowSettings(true)}
+          onLogin={handleLogin}
           onLogout={handleLogout}
         />
 
@@ -73,6 +64,13 @@ function App() {
                 ))}
               </div>
             )}
+
+            {/* Guest nudge — shown once cards are visible */}
+            {!currentUser && !loading && (
+              <p className="guest-nudge">
+                🏆 Sign in to save your scores to the leaderboard and track streaks!
+              </p>
+            )}
           </main>
         ) : (
           <Leaderboard scores={scores} currentUser={currentUser} />
@@ -86,6 +84,7 @@ function App() {
           elapsedTime={elapsedTime}
           difficulty={settings.difficulty}
           streak={streak}
+          currentUser={currentUser}
           onPlayAgain={() => { setShowWin(false); initializeGame(); }}
           onViewLeaderboard={() => { setShowWin(false); setView("leaderboard"); }}
         />
