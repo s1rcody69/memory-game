@@ -1,8 +1,8 @@
 export const SettingsModal = ({ settings, onChange, onClose, DIFFICULTY_CONFIG }) => {
   const themes = [
-    { key: "flags",    label: "🌍 African Flags",    desc: "Country flags via FlagCDN" },
-    { key: "wildlife", label: "🦁 African Wildlife",  desc: "Photos of iconic animals"  },
-    { key: "fruits",   label: "🍉 Tropical Fruits",   desc: "Colourful fruit emoji cards" },
+    { key: "flags",    label: "African Flags",    desc: "Country flags" },
+    { key: "wildlife", label: "African Wildlife",  desc: "Photos of animals"  },
+    { key: "fruits",   label: "Tropical Fruits",   desc: "Fruit emoji cards" },
   ];
  
   return (
