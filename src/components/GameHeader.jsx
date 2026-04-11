@@ -1,3 +1,6 @@
+import { Gamepad2 } from "lucide-react";
+import { Settings } from "lucide-react";
+
 const formatTime = (s) => {
   const m   = Math.floor(s / 60).toString().padStart(2, "0");
   const sec = (s % 60).toString().padStart(2, "0");
@@ -5,11 +8,11 @@ const formatTime = (s) => {
 };
 
 const streakIcon = (n) => {
-  if (n >= 30) return "👑";
+  if (n >= 30) return "🔥";
   if (n >= 14) return "🔥";
-  if (n >= 7)  return "⚡";
-  if (n >= 3)  return "✨";
-  return "🌱";
+  if (n >= 7)  return "🔥";
+  if (n >= 3)  return "🔥";
+  return "🔥";
 };
 
 export const GameHeader = ({
@@ -22,10 +25,10 @@ export const GameHeader = ({
       <div className="header__top">
         {/* Brand */}
         <div className="header__brand">
-          <span className="header__logo">🌍</span>
+          <span className="header__logo"><Gamepad2 /></span>
           <div>
-            <h1 className="header__title">Africa Match</h1>
-            <p className="header__subtitle">Memory Card Game</p>
+            <h1 className="header__title">Memory Matching Game!</h1>
+            <p className="header__subtitle"></p>
           </div>
         </div>
 
@@ -40,7 +43,7 @@ export const GameHeader = ({
           )}
 
           {/* Settings */}
-          <button className="icon-btn" onClick={onSettingsOpen} title="Settings">⚙️</button>
+          <button className="icon-btn" onClick={onSettingsOpen} title="Settings"><Settings /></button>
 
           {/* Auth */}
           {currentUser ? (
