@@ -2,7 +2,10 @@ import { useState } from "react";
 
 export const Card = ({ card, onClick }) => {
   const [imgError, setImgError] = useState(false);
-  const isFlag = card.type === "flag";
+
+  const isFlag     = card.type === "flag";
+  const isWildlife = card.type === "wildlife";
+  const isFruit    = card.type === "fruit";
 
   return (
     <div
@@ -14,28 +17,60 @@ export const Card = ({ card, onClick }) => {
       onKeyDown={(e) => e.key === "Enter" && onClick(card)}
     >
       <div className="card__inner">
-        {/* Hidden face */}
+
+        {/* ── Front (hidden) ── */}
         <div className="card__front">
           <span className="card__question">?</span>
         </div>
 
-        {/* Revealed face */}
-        <div className={`card__back ${isFlag ? "card__back--flag" : "card__back--wildlife"}`}>
-          {card.img && !imgError ? (
-            <img
-              className={isFlag ? "card__flag-img" : "card__wildlife-img"}
-              src={card.img}
-              alt={card.name}
-              draggable={false}
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <span className="card__emoji">
-              {card.emoji || (isFlag ? "🏳️" : "🦁")}
-            </span>
+        {/* ── Back (revealed) ── */}
+        <div className={`card__back ${isFlag ? "card__back--flag" : ""} ${isWildlife ? "card__back--wildlife" : ""} ${isFruit ? "card__back--fruit" : ""}`}>
+
+          {/* Flag: full flag image with contain */}
+          {isFlag && (
+            <>
+              {card.img && !imgError ? (
+                <div className="card__flag-wrap">
+                  <img
+                    className="card__flag-img"
+                    src={card.img}
+                    alt={card.name}
+                    draggable={false}
+                    onError={() => setImgError(true)}
+                  />
+                </div>
+              ) : (
+                <span className="card__emoji">🏳️</span>
+              )}
+            </>
           )}
+
+          {/* Wildlife: photo covering full card */}
+          {isWildlife && (
+            <>
+              {card.img && !imgError ? (
+                <img
+                  className="card__wildlife-img"
+                  src={card.img}
+                  alt={card.name}
+                  draggable={false}
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <span className="card__emoji">🦁</span>
+              )}
+            </>
+          )}
+
+          {/* Fruit: large emoji, no image */}
+          {isFruit && (
+            <span className="card__fruit-emoji">{card.emoji}</span>
+          )}
+
+          {/* Country / animal / fruit name — always visible at bottom */}
           <span className="card__name">{card.name}</span>
         </div>
+
       </div>
     </div>
   );
