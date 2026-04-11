@@ -1,17 +1,18 @@
 export const SettingsModal = ({ settings, onChange, onClose, DIFFICULTY_CONFIG }) => {
   const themes = [
-    { key: "flags",    label: "🌍 African Flags",  desc: "Real flag images via API" },
-    { key: "wildlife", label: "🦁 African Wildlife", desc: "Photos of iconic animals" },
+    { key: "flags",    label: "🌍 African Flags",    desc: "Country flags via FlagCDN" },
+    { key: "wildlife", label: "🦁 African Wildlife",  desc: "Photos of iconic animals"  },
+    { key: "fruits",   label: "🍉 Tropical Fruits",   desc: "Colourful fruit emoji cards" },
   ];
-
+ 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true">
       <div className="modal">
         <div className="modal__header">
           <h2 className="modal__title">Settings</h2>
-          <button className="modal__close" onClick={onClose}>✕</button>
+          <button className="modal__close" onClick={onClose} aria-label="Close">✕</button>
         </div>
-
+ 
         <div className="settings-section">
           <h3 className="settings-section__title">Difficulty</h3>
           <div className="settings-options">
@@ -27,7 +28,7 @@ export const SettingsModal = ({ settings, onChange, onClose, DIFFICULTY_CONFIG }
             ))}
           </div>
         </div>
-
+ 
         <div className="settings-section">
           <h3 className="settings-section__title">Card Theme</h3>
           <div className="settings-options settings-options--col">
@@ -43,9 +44,9 @@ export const SettingsModal = ({ settings, onChange, onClose, DIFFICULTY_CONFIG }
             ))}
           </div>
         </div>
-
+ 
         <p className="settings-note">Changes apply when you start a new game.</p>
-
+ 
         <div className="modal__actions">
           <button className="btn btn--primary" onClick={onClose}>Done</button>
         </div>
