@@ -1,10 +1,13 @@
+import { useState, useRef, useEffect } from "react";
+import { AuthPanel } from "./AuthPanel";
+
 const formatTime = (s) => {
   const m = Math.floor(s / 60).toString().padStart(2, "0");
   const sec = (s % 60).toString().padStart(2, "0");
   return `${m}:${sec}`;
 };
 
-const streakLabel = (n) => {
+const streakIcon = (n) => {
   if (n >= 30) return "👑";
   if (n >= 14) return "🔥";
   if (n >= 7)  return "⚡";
@@ -15,11 +18,27 @@ const streakLabel = (n) => {
 export const GameHeader = ({
   score, moves, elapsedTime, onReset,
   currentUser, streak, view, setView,
-  onSettingsOpen, onLogout,
+  onSettingsOpen, onLogin, onLogout,
 }) => {
+  const [showAuth, setShowAuth] = useState(false);
+  const authRef = useRef(null);
+
+  // Close panel when clicking outside
+  useEffect(() => {
+    if (!showAuth) return;
+    const handler = (e) => {
+      if (authRef.current && !authRef.current.contains(e.target)) {
+        setShowAuth(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showAuth]);
+
   return (
     <header className="header">
       <div className="header__top">
+        {/* Brand */}
         <div className="header__brand">
           <span className="header__logo">🌍</span>
           <div>
@@ -28,28 +47,61 @@ export const GameHeader = ({
           </div>
         </div>
 
+        {/* Right side actions */}
         <div className="header__actions">
-          {/* Streak badge */}
-          {streak > 0 && (
+          {/* Streak badge — only when logged in and streak > 0 */}
+          {currentUser && streak > 0 && (
             <div className="streak-badge" title={`${streak}-day win streak`}>
-              <span className="streak-badge__icon">{streakLabel(streak)}</span>
-              <span className="streak-badge__count">{streak}</span>
+              <span>{streakIcon(streak)}</span>
+              <span className="streak-badge__count">{streak}d</span>
             </div>
           )}
 
-          {/* User info */}
-          <div className="user-pill">
-            <span className="user-pill__avatar">
-              {currentUser?.username?.[0]?.toUpperCase() || "?"}
-            </span>
-            <span className="user-pill__name">{currentUser?.username || "Guest"}</span>
-          </div>
-
+          {/* Settings */}
           <button className="icon-btn" onClick={onSettingsOpen} title="Settings">⚙️</button>
-          <button className="icon-btn icon-btn--logout" onClick={onLogout} title="Sign out">↩</button>
+
+          {/* Auth area */}
+          <div className="auth-area" ref={authRef}>
+            {currentUser ? (
+              /* Logged-in: user pill + logout */
+              <div className="user-pill">
+                <span className="user-pill__avatar">
+                  {currentUser.username[0].toUpperCase()}
+                </span>
+                <span className="user-pill__name">{currentUser.username}</span>
+                <button
+                  className="user-pill__logout"
+                  onClick={onLogout}
+                  title="Sign out"
+                >
+                  ↩
+                </button>
+              </div>
+            ) : (
+              /* Guest: Sign In button that opens inline panel */
+              <button
+                className="signin-btn"
+                onClick={() => setShowAuth((v) => !v)}
+              >
+                Sign In
+              </button>
+            )}
+
+            {/* Inline auth dropdown (only when not logged in) */}
+            {!currentUser && showAuth && (
+              <AuthPanel
+                onSuccess={(user) => {
+                  onLogin(user);
+                  setShowAuth(false);
+                }}
+                onClose={() => setShowAuth(false)}
+              />
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Nav tabs */}
       <nav className="header__nav">
         <button
           className={`nav-tab ${view === "game" ? "nav-tab--active" : ""}`}
@@ -65,6 +117,7 @@ export const GameHeader = ({
         </button>
       </nav>
 
+      {/* Stats bar — visible in game view */}
       {view === "game" && (
         <div className="stats-bar">
           <div className="stat-card">
@@ -79,12 +132,14 @@ export const GameHeader = ({
             <span className="stat-card__label">Time</span>
             <span className="stat-card__value">{formatTime(elapsedTime)}</span>
           </div>
-          <div className="stat-card">
-            <span className="stat-card__label">Streak</span>
-            <span className="stat-card__value streak-stat">
-              {streak > 0 ? `${streakLabel(streak)} ${streak}d` : "—"}
-            </span>
-          </div>
+          {currentUser && (
+            <div className="stat-card">
+              <span className="stat-card__label">Streak</span>
+              <span className="stat-card__value streak-stat">
+                {streak > 0 ? `${streakIcon(streak)} ${streak}d` : "—"}
+              </span>
+            </div>
+          )}
           <button className="reset-btn" onClick={onReset}>New Game</button>
         </div>
       )}
