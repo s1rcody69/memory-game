@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login, register } from "../services/auth";
+import { Gamepad2 } from "lucide-react";
 
 export const AuthModal = ({ onSuccess }) => {
   const [mode, setMode] = useState("login"); // "login" | "register"
@@ -30,9 +31,9 @@ export const AuthModal = ({ onSuccess }) => {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Sign in">
       <div className="modal auth-modal">
         <div className="auth-modal__brand">
-          <span className="auth-modal__logo">🌍</span>
-          <h1 className="auth-modal__title"></h1>
-          <p className="auth-modal__sub">Memory Card Game</p>
+          <span className="auth-modal__logo"><Gamepad2 /></span>
+          <h1 className="auth-modal__title">Memory Card game</h1>
+          <p className="auth-modal__sub">Match cards have fun!</p>
         </div>
 
         <div className="auth-tabs">
