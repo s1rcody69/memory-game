@@ -1,7 +1,3 @@
-/* ═══════════════════════════════════════════════════════════════
-   AFRICA MATCH — index.css
-   Theme: Dark navy / indigo
-   ═══════════════════════════════════════════════════════════════ */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -18,7 +14,7 @@ body {
 
 #root { width: 100%; max-width: 1200px; }
 
-/* ── App Shell ──────────────────────────────────────────────── */
+/* APP SHELL */
 .app {
   display: flex;
   flex-direction: column;
@@ -37,9 +33,7 @@ body {
   gap: 24px;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   AUTH PAGE (full-page view)
-   ═══════════════════════════════════════════════════════════════ */
+/* Sign in / Auth page */
 .auth-page {
   width: 100%;
   min-height: 80vh;
@@ -130,7 +124,7 @@ body {
   line-height: 1.5;
 }
 
-/* Shared auth pieces */
+
 .auth-tabs {
   display: flex;
   gap: 4px;
@@ -179,9 +173,7 @@ body {
 
 .auth-link:hover { color: #a5b4fc; }
 
-/* ═══════════════════════════════════════════════════════════════
-   HEADER
-   ═══════════════════════════════════════════════════════════════ */
+/*Header*/
 .header {
   background: rgba(2, 11, 82, 0.664);
   padding: 24px 28px;
@@ -218,7 +210,7 @@ body {
   flex-wrap: nowrap;
 }
 
-/* Sign In button (guest) */
+/* Sign In button  */
 .signin-btn {
   padding: 8px 16px;
   background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
@@ -334,9 +326,7 @@ body {
 .reset-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
 .reset-btn:active { transform: translateY(0); }
 
-/* ═══════════════════════════════════════════════════════════════
-   GAME AREA
-   ═══════════════════════════════════════════════════════════════ */
+   /*GAME AREA*/
 .game-area {
   display: flex; flex-direction: column;
   align-items: center; gap: 14px; width: 100%;
@@ -374,9 +364,7 @@ body {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ═══════════════════════════════════════════════════════════════
-   CARDS GRID
-   ═══════════════════════════════════════════════════════════════ */
+/* Cards grid */
 .cards-grid {
   display: grid;
   gap: 12px;
@@ -384,11 +372,9 @@ body {
   max-width: 720px;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CARD BASE
-   ═══════════════════════════════════════════════════════════════ */
+/* Card base */
 .card {
-  /* Square cards — works for all themes */
+  
   aspect-ratio: 1 / 1;
   position: relative;
   cursor: pointer;
@@ -459,11 +445,7 @@ body {
   letter-spacing: 0.3px;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   FLAG CARDS
-   ─ Back is a dark navy panel.
-   ─ Flag is centred with contain so full flag always shows.
-   ═══════════════════════════════════════════════════════════════ */
+
 .card__back--flag {
   background: #0d1340;
   padding: 0 0 22px 0;   /* leave room for name strip */
@@ -493,11 +475,7 @@ body {
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
-/* ══════════════════════════════════════════════════════════════
-   WILDLIFE CARDS
-   ─ Photo fills the whole card.
-   ─ object-position: top shows head/face at top of frame.
-   ═══════════════════════════════════════════════════════════════ */
+/* Wildlife cards */
 .card__back--wildlife {
   background: #0b0f1a;
   padding: 0;
@@ -508,17 +486,13 @@ body {
   inset: 0;
   width: 100%; height: 100%;
   object-fit: cover;
-  /* 'top' anchors the head — animals typically have their interesting
-     part in the upper portion of the frame */
+ 
   object-position: center top;
   display: block;
   border-radius: 10px;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   FRUIT CARDS
-   ─ Large emoji centred, no image needed.
-   ═══════════════════════════════════════════════════════════════ */
+/* Fruit Cards*/
 .card__back--fruit {
   background: linear-gradient(135deg, #0f172a 0%, #1a1040 100%);
   padding: 0 0 22px 0;
@@ -538,7 +512,7 @@ body {
   user-select: none;
 }
 
-/* ── Matched state ────────────────────────────────────────────── */
+/*  Matched state  */
 .card--matched .card__back {
   border: 2px solid rgba(126, 211, 33, 0.55);
   box-shadow: 0 0 18px rgba(126, 211, 33, 0.35);
@@ -553,9 +527,7 @@ body {
   100% { transform: scale(1); }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   LEADERBOARD
-   ═══════════════════════════════════════════════════════════════ */
+/* Leaderboard */
 .leaderboard {
   width: 100%; max-width: 720px;
   display: flex; flex-direction: column; gap: 12px;
@@ -598,9 +570,7 @@ body {
 .leaderboard__scores      { display: flex; gap: 12px; flex-shrink: 0; }
 .leaderboard__score-item  { font-size: 0.8rem; color: #818cf8; white-space: nowrap; }
 
-/* ═══════════════════════════════════════════════════════════════
-   MODALS
-   ═══════════════════════════════════════════════════════════════ */
+/* Modals */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(2,2,52,0.88);
@@ -731,9 +701,7 @@ body {
 .btn--secondary { background: rgba(255,255,255,0.07); color: #a1a1aa; border: 1px solid rgba(255,255,255,0.1); }
 .btn--secondary:hover { background: rgba(255,255,255,0.12); color: #fff; }
 
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════════════════ */
+/*  Responsiveness*/
 @media (max-width: 768px) {
   .header { max-width: 100%; }
   .header__title { font-size: 1.5rem; }
