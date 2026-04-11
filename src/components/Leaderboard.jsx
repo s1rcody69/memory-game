@@ -1,14 +1,13 @@
 const formatTime = (s) => {
   if (!s && s !== 0) return "--";
-  const m = Math.floor(s / 60).toString().padStart(2, "0");
+  const m   = Math.floor(s / 60).toString().padStart(2, "0");
   const sec = (s % 60).toString().padStart(2, "0");
   return `${m}:${sec}`;
 };
 
 const formatDate = (iso) => {
-  try {
-    return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  } catch { return "--"; }
+  try { return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" }); }
+  catch { return "--"; }
 };
 
 const MEDAL = ["🥇", "🥈", "🥉"];
@@ -46,7 +45,7 @@ export const Leaderboard = ({ scores, currentUser }) => {
               <div className="leaderboard__info">
                 <span className="leaderboard__name">
                   {entry.playerName || "Anonymous"}
-                  {isMe && <span className="leaderboard__you-badge"> You</span>}
+                  {isMe && <span className="leaderboard__you-badge">You</span>}
                 </span>
                 <span className="leaderboard__meta">
                   {entry.difficulty} · {entry.theme} · {formatDate(entry.date)}
@@ -54,8 +53,8 @@ export const Leaderboard = ({ scores, currentUser }) => {
               </div>
 
               <div className="leaderboard__scores">
-                <span className="leaderboard__score-item" title="Pairs matched">⭐ {entry.score}</span>
-                <span className="leaderboard__score-item" title="Moves taken">🃏 {entry.moves}</span>
+                <span className="leaderboard__score-item" title="Pairs">⭐ {entry.score}</span>
+                <span className="leaderboard__score-item" title="Moves">🃏 {entry.moves}</span>
                 <span className="leaderboard__score-item" title="Time">⏱ {formatTime(entry.time)}</span>
               </div>
             </div>
