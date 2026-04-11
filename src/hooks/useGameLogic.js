@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { saveScore, readScores, readSettings, updateSettings } from "../services/storage.js";
-import { updateUserStats } from "../services/auth.js";
-import { fetchAfricanFlags, getWildlifeCards } from "../services/api.js";
+import { saveScore, readScores, readSettings, updateSettings } from "../services/storage";
+import { updateUserStats } from "../services/auth";
+import { fetchAfricanFlags, getWildlifeCards } from "../services/api";
 
 export const DIFFICULTY_CONFIG = {
-
   easy:   { pairs: 6,  label: "Easy",   cols: 3 },
   medium: { pairs: 8,  label: "Medium",  cols: 4 },
   hard:   { pairs: 12, label: "Hard",    cols: 6 },
