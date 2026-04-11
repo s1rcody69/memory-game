@@ -18,15 +18,15 @@ export const Card = ({ card, onClick }) => {
     >
       <div className="card__inner">
 
-        {/* ── Front (hidden) ── */}
+        {/* front hiddem */}
         <div className="card__front">
           <span className="card__question">?</span>
         </div>
 
-        {/* ── Back (revealed) ── */}
+        {/*  Back revealed */}
         <div className={`card__back ${isFlag ? "card__back--flag" : ""} ${isWildlife ? "card__back--wildlife" : ""} ${isFruit ? "card__back--fruit" : ""}`}>
 
-          {/* Flag: full flag image with contain */}
+          {/*  full flag image with contain */}
           {isFlag && (
             <>
               {card.img && !imgError ? (
@@ -45,7 +45,7 @@ export const Card = ({ card, onClick }) => {
             </>
           )}
 
-          {/* Wildlife: photo covering full card */}
+          {/* Wildlife photo*/}
           {isWildlife && (
             <>
               {card.img && !imgError ? (
@@ -62,7 +62,7 @@ export const Card = ({ card, onClick }) => {
             </>
           )}
 
-          {/* Fruit: large emoji, no image */}
+          {/* Fruit emoji, no image */}
           {isFruit && (
             <span className="card__fruit-emoji">{card.emoji}</span>
           )}
