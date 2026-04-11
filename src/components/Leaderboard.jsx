@@ -1,3 +1,5 @@
+import { Trophy } from "lucide-react";
+
 const formatTime = (s) => {
   if (!s && s !== 0) return "--";
   const m   = Math.floor(s / 60).toString().padStart(2, "0");
@@ -16,7 +18,7 @@ export const Leaderboard = ({ scores, currentUser }) => {
   if (!scores.length) {
     return (
       <main className="leaderboard leaderboard--empty">
-        <div className="leaderboard__empty-icon">🏆</div>
+        <div className="leaderboard__empty-icon"><Trophy /></div>
         <h2 className="leaderboard__empty-title">No scores yet</h2>
         <p className="leaderboard__empty-msg">Complete a game to appear on the leaderboard!</p>
       </main>
