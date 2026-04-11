@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useState } from "react";
 import { saveScore, readScores, readSettings, updateSettings } from "../services/storage";
 import { updateUserStats } from "../services/auth";
-import { fetchAfricanFlags, getWildlifeCards } from "../services/api";
+import { getAfricanFlags, getWildlifeCards, getFruitCards } from "../services/api";
 
 export const DIFFICULTY_CONFIG = {
   easy:   { pairs: 6,  label: "Easy",   cols: 3 },
   medium: { pairs: 8,  label: "Medium",  cols: 4 },
   hard:   { pairs: 12, label: "Hard",    cols: 6 },
 };
+
+const THEMES = {
+  flags:    { label: "African Flags",   icon: "🌍", getData: getAfricanFlags },
+  wildlife: { label: "African Wildlife",icon: "🦁", getData: getWildlifeCards },
+  fruits:   { label: "Fruits",          icon: "🍉", getData: getFruitCards },
+};
+export { THEMES };
 
 const shuffleArray = (arr) => {
   const a = [...arr];
@@ -36,20 +43,16 @@ export const useGameLogic = (currentUser) => {
   const [loading, setLoading]           = useState(true);
   const [streak, setStreak]             = useState(currentUser?.streak || 0);
 
-  const config = DIFFICULTY_CONFIG[settings.difficulty];
+  const config = DIFFICULTY_CONFIG[settings.difficulty] || DIFFICULTY_CONFIG.medium;
 
-  // Fetch cards from API when theme changes
+  // Load card pool whenever theme changes
   useEffect(() => {
-    let cancelled = false;
     setLoading(true);
-    const load = async () => {
-      const pool = settings.theme === "flags"
-        ? await fetchAfricanFlags()
-        : getWildlifeCards();
-      if (!cancelled) { setCardPool(pool); setLoading(false); }
-    };
-    load();
-    return () => { cancelled = true; };
+    const themeConfig = THEMES[settings.theme] || THEMES.flags;
+    // All getters are synchronous now (no fetch needed)
+    const pool = themeConfig.getData();
+    setCardPool(pool);
+    setLoading(false);
   }, [settings.theme]);
 
   // Timer
@@ -62,12 +65,16 @@ export const useGameLogic = (currentUser) => {
   // Initialize game
   const initializeGame = useCallback(() => {
     if (!cardPool.length) return;
-    const picked = shuffleArray(cardPool).slice(0, config.pairs);
+    const picked  = shuffleArray(cardPool).slice(0, config.pairs);
     const doubled = shuffleArray([...picked, ...picked]);
     setCards(doubled.map((item, i) => ({
-      id: i, name: item.name,
-      img: item.img || null, emoji: item.emoji || null,
-      isFlipped: false, isMatched: false,
+      id:        i,
+      name:      item.name,
+      img:       item.img  || null,
+      emoji:     item.emoji || null,
+      type:      item.type,
+      isFlipped: false,
+      isMatched: false,
     })));
     setFlippedCards([]); setMatchedCards([]);
     setScore(0); setMoves(0);
@@ -76,8 +83,8 @@ export const useGameLogic = (currentUser) => {
   }, [cardPool, config.pairs]);
 
   useEffect(() => {
-    if (!loading) initializeGame();
-  }, [loading, initializeGame]);
+    if (!loading && cardPool.length) initializeGame();
+  }, [loading, cardPool, initializeGame]);
 
   // Win detection
   useEffect(() => {
@@ -87,10 +94,10 @@ export const useGameLogic = (currentUser) => {
     if (currentUser) {
       saveScore({
         playerName: currentUser.username,
-        userKey: currentUser.key,
+        userKey:    currentUser.key,
         moves, score, time: elapsedTime,
         difficulty: settings.difficulty,
-        theme: settings.theme,
+        theme:      settings.theme,
       });
       const updated = updateUserStats(currentUser.key, { moves, score });
       if (updated) setStreak(updated.streak);
@@ -98,16 +105,14 @@ export const useGameLogic = (currentUser) => {
     }
   }, [matchedCards, cards.length]);
 
-  // Card click
+  // Card click handler
   const handleCardClick = useCallback((card) => {
     if (card.isFlipped || card.isMatched || isLocked || flippedCards.length === 2) return;
     if (moves === 0 && flippedCards.length === 0) setTimerActive(true);
 
-    const newCards = cards.map((c) =>
-      c.id === card.id ? { ...c, isFlipped: true } : c
-    );
-    setCards(newCards);
+    const newCards   = cards.map((c) => c.id === card.id ? { ...c, isFlipped: true } : c);
     const newFlipped = [...flippedCards, card.id];
+    setCards(newCards);
     setFlippedCards(newFlipped);
 
     if (flippedCards.length === 1) {
