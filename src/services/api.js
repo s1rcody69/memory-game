@@ -1,6 +1,5 @@
 // ─── AFRICAN FLAGS ────────────────────────────────────────────────────────────
-// Uses flagcdn.com — free, no API key, no fetch needed, consistent 4:3 ratio.
-// URL pattern: https://flagcdn.com/w320/{iso2_lowercase}.png
+
 const AFRICAN_FLAG_CARDS = [
   { name: "Kenya",         code: "ke" },
   { name: "Nigeria",       code: "ng" },
@@ -24,18 +23,17 @@ const AFRICAN_FLAG_CARDS = [
   name,
   code,
   type: "flag",
-  // Request w320 size for card display — crisp, correct 3:2 ratio
+  
+  
   img: `https://flagcdn.com/w320/${code}.png`,
 }));
 
 // ─── AFRICAN WILDLIFE ─────────────────────────────────────────────────────────
-// Pinned Unsplash photo IDs — free, CORS-friendly, no API key.
-// crop=entropy finds the most interesting region; we override per-animal
-// with crop=top to favour head/face. For full-body shots we use crop=center.
+
 const WILDLIFE_CARDS = [
   {
     name: "Lion",
-    img: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=400&h=480&fit=crop&crop=center&auto=format&q=80",
+    img: "https://unsplash.com/photos/brown-lion-with-silver-chain-link-necklace-3tkxfe2GocY",
   },
   {
     name: "Elephant",
@@ -84,7 +82,7 @@ const WILDLIFE_CARDS = [
 ].map((c) => ({ ...c, type: "wildlife" }));
 
 // ─── FRUITS ───────────────────────────────────────────────────────────────────
-// Hardcoded — emoji render crisply at large sizes, no image loading issues.
+
 const FRUIT_CARDS = [
   { name: "Mango",      emoji: "🥭" },
   { name: "Watermelon", emoji: "🍉" },
@@ -100,7 +98,7 @@ const FRUIT_CARDS = [
   { name: "Coconut",    emoji: "🥥" },
 ].map((c) => ({ ...c, type: "fruit", img: null }));
 
-// ─── Exports ──────────────────────────────────────────────────────────────────
+
 export const getAfricanFlags   = () => AFRICAN_FLAG_CARDS;
 export const getWildlifeCards  = () => WILDLIFE_CARDS;
 export const getFruitCards     = () => FRUIT_CARDS;
